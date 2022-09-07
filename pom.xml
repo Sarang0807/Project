@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>day20_ems_backend</artifactId>
+	<artifactId>Project</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>day20_ems_backend</name>
-	<description>Spring Boot Project for Emp Management backend2</description>
+	<name>Project</name>
+	<description>Spring Boot Project</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -61,6 +61,12 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.4</version>
+		</dependency>
+		<!-- Model Mapper Library -->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 	</dependencies>
 

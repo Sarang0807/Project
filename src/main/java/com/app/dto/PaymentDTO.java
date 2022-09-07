@@ -1,7 +1,5 @@
 package com.app.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import com.app.pojos.Order;
@@ -14,10 +12,8 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
 @ToString(exclude = "userId")
-@Table(name="payments")
 public class PaymentDTO {
 
 	private Integer paymentId;

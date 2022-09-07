@@ -10,6 +10,14 @@ import com.app.pojos.Address;
 import com.app.pojos.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString(exclude = "addressid")
 public class UserDTO {
 	@JsonProperty("id")
 	private Integer userId;

@@ -16,7 +16,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = "user")
+@ToString
 @Entity
 @Table(name="addresses")
 public class Address  {
@@ -31,9 +31,6 @@ public class Address  {
 	private int pincode;
 	@Column(length = 100)
 	private String address;
-	// bi dir one to one relationship between entities
-	//val of mappedBy -- name of the asso. prop as it appears in the owning side
-	@OneToOne(mappedBy ="addressid")
-	private User user;
+
 	
 }
