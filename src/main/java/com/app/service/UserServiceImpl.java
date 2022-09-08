@@ -42,6 +42,18 @@ public class UserServiceImpl implements IUserService {
 		//map entity --> dto
 		return mapper.map(persistentUser, UserDTO.class);
 	}
+	
+	@Override
+	public String deleteUserDetails(int userId) {
+		String mesg = "Deletion of User details failed Invalid Id!!!!!!!!!!!";
+
+		if (userRepo.existsById(userId)) {
+			userRepo.deleteById(userId);
+			mesg = "User details deleted successfully , for User id :" + userId;
+		}
+
+		return mesg;
+	}
 
 	@Override
 	public User getUserDetails(int userId) {
@@ -56,16 +68,6 @@ public class UserServiceImpl implements IUserService {
 		return userRepo.save(updatedUser);
 	}
 
-	@Override
-	public String deleteUserDetails(int userId) {
-		String mesg = "Deletion of emp details failed Invalid Id!!!!!!!!!!!";
-
-		if (userRepo.existsById(userId)) {
-			userRepo.deleteById(userId);
-			mesg = "Emp details deleted successfully , for emp id :" + userId;
-		}
-
-		return mesg;
-	}
+	
 
 }
