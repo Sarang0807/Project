@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import ch.qos.logback.core.subst.Token.Type;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,6 +51,7 @@ public class User {
 	private Role role;
 	@OneToOne
 	@JoinColumn(name="address_id")
+	@Cascade(CascadeType.ALL)
 	private Address addressid;
 	
 }

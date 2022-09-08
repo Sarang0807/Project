@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.custom_excpetions.ResourceNotFoundException;
+import com.app.dao.AddressRepository;
 import com.app.dao.UserRepository;
 import com.app.dto.UserDTO;
 import com.app.pojos.User;
@@ -22,6 +23,8 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	private UserRepository userRepo;
 	@Autowired
+	private AddressRepository addRepo;
+	@Autowired
 	private ModelMapper mapper;
 
 	@Override
@@ -31,7 +34,10 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public UserDTO saveUserDetails(UserDTO userDto) {
-		User user = mapper.map(userDto, User.class);//EmployeeDto to Employee received from frontEnd
+		User user = mapper.map(userDto, User.class);//EmployeeDto to Employee received from frontEnd\
+		
+		addRepo.save(userDto.getAddressid());
+		
 		User persistentUser = userRepo.save(user);// method rets PERSISTENT emp ref
 		//map entity --> dto
 		return mapper.map(persistentUser, UserDTO.class);
@@ -46,6 +52,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public User updateUserDetails(User updatedUser) {
+		addRepo.save(updatedUser.getAddressid());
 		return userRepo.save(updatedUser);
 	}
 
