@@ -3,6 +3,8 @@ package com.app.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,21 +42,21 @@ public class UserController {
 // add req handling method (REST API call) to send all users
 	@GetMapping
 	public ResponseEntity<?> listAllusers() {
-		System.out.println("in list users");
+		System.out.println("in list emps");
 		List<User> list = userService.getAllUserDetails();
 // o.s.ResponseEntity(T body,HttpStatus sts)
 		if (list.isEmpty())
-			return new ResponseEntity<>("userty User List !!!!", HttpStatus.OK);
+			return new ResponseEntity<>("Empty User List !!!!", HttpStatus.OK);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
 // add req handling method to create new user
 	@PostMapping
-	public ResponseEntity<UserDTO> saveUserDetails(@RequestBody UserDTO user)
+	public ResponseEntity<UserDTO> saveUserDetails(@RequestBody @Valid UserDTO user)
 // To inform SC , to un marshall(de-serialization , json/xml --> Java obj) the
 // method arg.
 	{
-		System.out.println("in save user " + user);// id : null...
+		System.out.println("in save emp " + user);// id : null...
 
 		//return  ResponseEntity.ok(userService.saveUserDetails(user))
 		return new ResponseEntity<>(userService.saveUserDetails(user), HttpStatus.CREATED);
@@ -64,8 +66,8 @@ public class UserController {
 // add req handling method to delete user details
 	@DeleteMapping("/{userId}") // can use ANY name for a path var.
 // @PathVariable => a binding between a path var to method arg.
-	public String deleteuserDetails(@PathVariable @Range(min = 1, message = "Invalid user id!!!") int userId) {
-		System.out.println("in del user " + userId);
+	public String deleteEmpDetails(@PathVariable @Range(min = 1, message = "Invalid user id!!!") int userId) {
+		System.out.println("in del emp " + userId);
 		return userService.deleteUserDetails(userId);
 	}
 
@@ -75,15 +77,15 @@ public class UserController {
 	public ResponseEntity<?> getUserDetails(@PathVariable int id) {
 		System.out.println("in get User " + id);
 		User user = userService.getUserDetails(id);
-		System.out.println("user class " + user.getClass());
+		System.out.println("emp class " + user.getClass());
 		return ResponseEntity.ok(user);
 
 	}
 
 // add a method to update existing resource
 	@PutMapping
-	public User updateUserDetails(@RequestBody User user) {
-		System.out.println("in update user " + user);// id not null
+	public User updateUserDetails(@RequestBody @Valid User user) {
+		System.out.println("in update emp " + user);// id not null
 		return userService.updateUserDetails(user);
 	}
 

@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
-import org.hibernate.internal.build.AllowSysOut;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.app.custom_excpetions.ResourceNotFoundException;
 import com.app.dao.CategoryRepository;
 import com.app.dto.CategoryDTO;
+import com.app.dto.UserDTO;
 import com.app.pojos.Category;
+import com.app.pojos.User;
 
 @Service
 
@@ -33,6 +34,7 @@ public class CatServiceImpl implements ICatService {
 	@Value("${file.upload.location}")
 	private String baseFolder;
 
+	@Autowired
 	private ModelMapper mapper;
 
 	@Override
@@ -42,14 +44,12 @@ public class CatServiceImpl implements ICatService {
 	}
 
 	@Override
-	public CategoryDTO saveCategoryDetails(CategoryDTO cat) {
-
-		System.out.println("1"+cat);
-		Category cate = mapper.map(cat, Category.class);// EmployeeDto to Employee received from frontEnd
+	public CategoryDTO saveCategoryDetails(CategoryDTO catDto) {
+		System.out.println("1 : "+ catDto);
+		Category category = mapper.map(catDto, Category.class);//EmployeeDto to Employee received from frontEnd\
 		System.out.println("2");
-		Category persistentCat = catRepo.save(cate);// method rets PERSISTENT emp ref
-		// map entity --> dto
-		System.out.println("3");
+		Category persistentCat = catRepo.save(category);// method rets PERSISTENT emp ref
+		System.out.println("4");
 		return mapper.map(persistentCat, CategoryDTO.class);
 	}
 
@@ -79,17 +79,20 @@ public class CatServiceImpl implements ICatService {
 
 	@Override
 	public CategoryDTO storeImage(int catId, MultipartFile imageFile) throws IOException {
+		System.out.println("1 : "+catId);
 		Category cat = catRepo.findById(catId)
 				.orElseThrow(() -> new ResourceNotFoundException("Err in service of Image adding!!!!"));
+		System.out.println("2 : "+catId);
 		String completePath = baseFolder + File.separator + imageFile.getOriginalFilename();
+		System.out.println("3 : "+catId);
 		System.out.println("Complete Path : " + completePath);
-
+		System.out.println("4 : "+catId);
 		System.out.println("Copying no of bytes : "
 				+ Files.copy(imageFile.getInputStream(), Paths.get(completePath), StandardCopyOption.REPLACE_EXISTING));
-
+		System.out.println("5 : "+catId);
 		// save complete path to the image in db
 		cat.setCatImage(completePath);// save complete path to the file in db
-
+		System.out.println("6 : "+catId);
 		return mapper.map(cat, CategoryDTO.class);
 	}
 
@@ -97,7 +100,7 @@ public class CatServiceImpl implements ICatService {
 	public byte[] restoreImage(int catId) throws IOException {
 		// get cat details by cat id
 		Category cat = catRepo.findById(catId)
-				.orElseThrow(() -> new ResourceNotFoundException("Err in service of Image adding!!!!"));
+				.orElseThrow(() -> new ResourceNotFoundException("Err in service of Image Downloading!!!!"));
 
 		// get complete image path from db ->> extract image contents n send to the
 		// caller

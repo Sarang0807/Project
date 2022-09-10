@@ -4,6 +4,7 @@ import javax.validation.constraints.NotBlank;
 
 import com.app.pojos.Category;
 import com.app.pojos.Order;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FoodDTO {
 	
+	@JsonProperty("id")
 	private Integer foodId;
 	@NotBlank
 	private String foodName;

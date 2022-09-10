@@ -25,6 +25,4 @@ public class Category {
 	private String catName;
 	@Column(length = 200)
 	private String catImage;
-	
-	
 }

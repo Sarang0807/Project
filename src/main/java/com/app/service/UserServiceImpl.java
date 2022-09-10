@@ -9,21 +9,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.custom_excpetions.ResourceNotFoundException;
-import com.app.dao.AddressRepository;
 import com.app.dao.UserRepository;
 import com.app.dto.UserDTO;
 import com.app.pojos.User;
 
 @Service
-
 @Transactional
 public class UserServiceImpl implements IUserService {
 	// dep : emp repo.
 
 	@Autowired
 	private UserRepository userRepo;
-	@Autowired
-	private AddressRepository addRepo;
+	/*
+	 * @Autowired private AddressRepository addRepo;
+	 */
 	@Autowired
 	private ModelMapper mapper;
 
@@ -34,25 +33,14 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public UserDTO saveUserDetails(UserDTO userDto) {
+		System.out.println("1 : "+ userDto);
 		User user = mapper.map(userDto, User.class);//EmployeeDto to Employee received from frontEnd\
-		
-		addRepo.save(userDto.getAddressid());
-		
+		System.out.println("2");
+		//addRepo.save(userDto.getAddressid());
+		System.out.println("3");
 		User persistentUser = userRepo.save(user);// method rets PERSISTENT emp ref
-		//map entity --> dto
+		System.out.println("4");
 		return mapper.map(persistentUser, UserDTO.class);
-	}
-	
-	@Override
-	public String deleteUserDetails(int userId) {
-		String mesg = "Deletion of User details failed Invalid Id!!!!!!!!!!!";
-
-		if (userRepo.existsById(userId)) {
-			userRepo.deleteById(userId);
-			mesg = "User details deleted successfully , for User id :" + userId;
-		}
-
-		return mesg;
 	}
 
 	@Override
@@ -64,10 +52,24 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public User updateUserDetails(User updatedUser) {
-		addRepo.save(updatedUser.getAddressid());
+		//addRepo.save(updatedUser.getAddressid());
+		
+		  User u = getUserDetails(updatedUser.getUserId());
+		  updatedUser.setAddressid(u.getAddressid());
+		 
 		return userRepo.save(updatedUser);
 	}
 
-	
+	@Override
+	public String deleteUserDetails(int userId) {
+		String mesg = "Deletion of emp details failed Invalid Id!!!!!!!!!!!";
+
+		if (userRepo.existsById(userId)) {
+			userRepo.deleteById(userId);
+			mesg = "Emp details deleted successfully , for emp id :" + userId;
+		}
+
+		return mesg;
+	}
 
 }

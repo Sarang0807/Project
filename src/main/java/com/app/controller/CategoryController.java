@@ -4,6 +4,8 @@ package com.app.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,9 +54,9 @@ public class CategoryController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
-// add req handling method to create new user
+
 	@PostMapping
-	public ResponseEntity<CategoryDTO> saveCategoryDetails(@RequestBody CategoryDTO cat)
+	public ResponseEntity<CategoryDTO> saveCategoryDetails(@RequestBody @Valid CategoryDTO cat)
 // To inform SC , to un marshall(de-serialization , json/xml --> Java obj) the
 // method arg.
 	{
@@ -66,7 +68,7 @@ public class CategoryController {
 
 	
 // add req handling method to delete user details
-	@DeleteMapping("/{userId}") // can use ANY name for a path var.
+	@DeleteMapping("/{catId}") // can use ANY name for a path var.
 // @PathVariable => a binding between a path var to method arg.
 	public String deleteCategoryDetails(@PathVariable @Range(min = 1, message = "Invalid Category id!!!") int catId) {
 		System.out.println("in del emp " + catId);
@@ -91,29 +93,23 @@ public class CategoryController {
 		return catService.updateCategoryDetails(cat);
 	}
 
-
-	
-	
-	
-	
-	
 	
 	
 	// add a method to upload image on the server side folder
-		@PostMapping("/{empId}/image")
-		public ResponseEntity<?> uploadImage(@PathVariable int empId, @RequestParam MultipartFile imageFile)
+		@PostMapping("/{catId}/image")
+		public ResponseEntity<?> uploadImage(@PathVariable int catId, @RequestParam MultipartFile imageFile)
 				throws IOException {
-			System.out.println("in upload image " + empId);
+			System.out.println("in upload image " + catId);
 			System.out.println("uploaded img file name " + imageFile.getOriginalFilename() + " content type "
 					+ imageFile.getContentType() + " size " + imageFile.getSize());
 			// invoke service layer method to save uploaded file in the server side folder
 			// --ImageHandligService
-			CategoryDTO catDTO = catService.storeImage(empId, imageFile);
+			CategoryDTO catDTO = catService.storeImage(catId, imageFile);
 			return ResponseEntity.ok(catDTO);
 		}
 
 		// add req handling method to download image for specific emp
-		@GetMapping(value = "/{empId}/image", produces = { MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE,
+		@GetMapping(value = "/{catId}/image", produces = { MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE,
 				MediaType.IMAGE_PNG_VALUE })
 		public ResponseEntity<?> downloadImage(@PathVariable int catId) throws IOException{
 			System.out.println("in img download " + catId);

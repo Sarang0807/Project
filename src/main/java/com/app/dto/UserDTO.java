@@ -6,6 +6,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.app.pojos.Address;
 import com.app.pojos.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,7 +24,7 @@ public class UserDTO {
 	@JsonProperty("id")
 	private Integer userId;
 	@NotEmpty(message = "First name must be supplied")
-	//@Length(min = 4, max = 30, message = "Invalid First name length")
+	@Length(min = 4, max = 30, message = "Invalid First name length")
 	private String firstName;	
 	@NotBlank
 	private String lastName;
@@ -35,9 +37,8 @@ public class UserDTO {
 	private String mobileNo;
 	@NotBlank
 	private String password;
-	@NotBlank
 	@Enumerated(EnumType.STRING)
-	private Role role;
+	private Role role = Role.USER;
 	
 	private Address addressid;
 	
