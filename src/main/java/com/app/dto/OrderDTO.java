@@ -1,7 +1,5 @@
 package com.app.dto;
 
-import javax.validation.constraints.NotBlank;
-
 import com.app.pojos.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,7 +17,7 @@ public class OrderDTO {
 	private Integer orderId;
   
 	private User userId;
-	@NotBlank
+
 	private double totalPrize;
 	
 }

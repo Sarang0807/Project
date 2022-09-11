@@ -10,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.app.custom_excpetions.ResourceNotFoundException;
 import com.app.dao.AddressRepository;
+import com.app.dao.UserRepository;
 import com.app.dto.AddressDTO;
 import com.app.pojos.Address;
+import com.app.pojos.User;
 
 @Service
 
@@ -22,6 +24,8 @@ public class AddressServiceImpl implements IAddressService {
 	@Autowired
 	private AddressRepository addRepo;
 	@Autowired
+	private UserRepository userRepo;
+	@Autowired
 	private ModelMapper mapper;
 	@Override
 	public List<Address> getAllUserAddresses() {
@@ -29,11 +33,16 @@ public class AddressServiceImpl implements IAddressService {
 		return addRepo.findAll();
 	}
 	@Override
-	public AddressDTO saveAddressDetails(AddressDTO address) {
-		Address addr = mapper.map(address, Address.class);//EmployeeDto to Employee received from frontEnd\
+	public AddressDTO saveAddressDetails(int userId, AddressDTO address) {
+		User user = userRepo.getById(userId);
 		
-		Address persistentAddr = addRepo.save(addr);// method rets PERSISTENT emp ref
-		//map entity --> dto
+		Address addr = mapper.map(address, Address.class);
+		
+		Address persistentAddr = addRepo.save(addr);
+		
+		user.setAddressid(persistentAddr);
+		System.out.println("address : "+persistentAddr);
+		
 		return mapper.map(persistentAddr, AddressDTO.class);
 	}
 	@Override

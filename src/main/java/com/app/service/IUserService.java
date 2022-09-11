@@ -1,6 +1,7 @@
 package com.app.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.app.dto.UserDTO;
 import com.app.pojos.User;
@@ -19,5 +20,7 @@ public interface IUserService {
 	  User getUserDetails(int userId);
 	//update existing user details
 	  User updateUserDetails(User updatedUser);
+	Optional<User> signIn(User user);
+	User forgetPassword(User user);
 	 
 }

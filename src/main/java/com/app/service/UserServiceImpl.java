@@ -2,6 +2,7 @@
 package com.app.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,8 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public UserDTO saveUserDetails(UserDTO userDto) {
-		System.out.println("1 : "+ userDto);
-		User user = mapper.map(userDto, User.class);//EmployeeDto to Employee received from frontEnd\
-		System.out.println("2");
-		//addRepo.save(userDto.getAddressid());
-		System.out.println("3");
+		User user = mapper.map(userDto, User.class);//EmployeeDto to Employee received from frontEnd
 		User persistentUser = userRepo.save(user);// method rets PERSISTENT emp ref
-		System.out.println("4");
 		return mapper.map(persistentUser, UserDTO.class);
 	}
 
@@ -62,14 +58,28 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public String deleteUserDetails(int userId) {
-		String mesg = "Deletion of emp details failed Invalid Id!!!!!!!!!!!";
+		String mesg = "Deletion of User details failed Invalid Id!!!!!!!!!!!";
 
 		if (userRepo.existsById(userId)) {
 			userRepo.deleteById(userId);
-			mesg = "Emp details deleted successfully , for emp id :" + userId;
+			mesg = "User details deleted successfully , for user id :" + userId;
 		}
 
 		return mesg;
 	}
 
+	@Override
+    public Optional<User> signIn(User user) {
+
+        return userRepo.findByEmailAndPassword(user.getEmail(),user.getPassword());
+    }
+
+
+
+    @Override
+    public User forgetPassword(User user) {
+        // TODO Auto-generated method stub
+        return userRepo.findByEmail(user.getEmail());
+    }
+	
 }

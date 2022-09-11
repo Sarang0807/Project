@@ -38,7 +38,7 @@ public class AddressController {
 // add req handling method (REST API call) to send all users
 	@GetMapping
 	public ResponseEntity<?> listAlladdresses() {
-		System.out.println("in list emps");
+		System.out.println("in list Addresses");
 		List<Address> list = addrService.getAllUserAddresses();
 // o.s.ResponseEntity(T body,HttpStatus sts)
 		if (list.isEmpty())
@@ -47,15 +47,15 @@ public class AddressController {
 	}
 
 // add req handling method to create new user
-	@PostMapping
-	public ResponseEntity<AddressDTO> saveAddressDetails(@RequestBody AddressDTO addr)
+	@PostMapping("/{userId}")
+	public ResponseEntity<AddressDTO> saveAddressDetails(@PathVariable int userId,@RequestBody AddressDTO addr)
 // To inform SC , to un marshall(de-serialization , json/xml --> Java obj) the
 // method arg.
 	{
-		System.out.println("in save addr " + addr);// id : null...
+		System.out.println("in save Address " + addr);// id : null...
 
 		//return  ResponseEntity.ok(userService.saveUserDetails(user))
-		return new ResponseEntity<>(addrService.saveAddressDetails(addr), HttpStatus.CREATED);
+		return new ResponseEntity<>(addrService.saveAddressDetails(userId,addr), HttpStatus.CREATED);
 	}
 
 

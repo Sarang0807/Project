@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,8 +36,9 @@ public class Food {
 	private String foodImage;
 	
 	private double foodPrize;
+	
 	@ManyToOne
-	@JoinColumn(name="cat_id")           //fk
+	@JoinColumn(name="cat_id") //fk
 	private Category categoryId;
 	@ManyToOne
 	@JoinColumn(name="order_id")           //fk

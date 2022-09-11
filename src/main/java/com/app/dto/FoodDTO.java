@@ -22,9 +22,9 @@ public class FoodDTO {
 	private String foodName;
 	@NotBlank
 	private String foodDescription;
-	@NotBlank
+	
 	private String foodImage;
-	@NotBlank
+
 	private double foodPrize;
 	        //fk
 	private Category categoryId;

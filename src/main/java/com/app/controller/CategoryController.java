@@ -50,7 +50,7 @@ public class CategoryController {
 		List<Category> list = catService.getAllCategoryDetails();
 // o.s.ResponseEntity(T body,HttpStatus sts)
 		if (list.isEmpty())
-			return new ResponseEntity<>("Empty User List !!!!", HttpStatus.OK);
+			return new ResponseEntity<>("Empty Category List !!!!", HttpStatus.OK);
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
@@ -71,7 +71,7 @@ public class CategoryController {
 	@DeleteMapping("/{catId}") // can use ANY name for a path var.
 // @PathVariable => a binding between a path var to method arg.
 	public String deleteCategoryDetails(@PathVariable @Range(min = 1, message = "Invalid Category id!!!") int catId) {
-		System.out.println("in del emp " + catId);
+		System.out.println("in del Category " + catId);
 		return catService.deleteCategoryDetails(catId);
 	}
 
@@ -81,7 +81,7 @@ public class CategoryController {
 	public ResponseEntity<?> getCategoryDetails(@PathVariable int id) {
 		System.out.println("in get Category " + id);
 		Category cat = catService.getCategoryDetails(id);
-		System.out.println("emp class " + cat.getClass());
+		System.out.println("category class " + cat.getClass());
 		return ResponseEntity.ok(cat);
 
 	}

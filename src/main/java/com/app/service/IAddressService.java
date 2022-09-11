@@ -12,7 +12,7 @@ public interface IAddressService {
 	//get all details
 	  List<Address> getAllUserAddresses();
 	//save new user details
-	  AddressDTO saveAddressDetails(AddressDTO address); 
+	  AddressDTO saveAddressDetails(int userId,AddressDTO address); 
 	//get user details by specified id
 	  Address getAddressDetails(int addressId);
 	//update existing user details

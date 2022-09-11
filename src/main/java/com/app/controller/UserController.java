@@ -1,7 +1,9 @@
 
 package com.app.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dto.ErrorResponse;
 import com.app.dto.UserDTO;
 import com.app.pojos.User;
 import com.app.service.IUserService;
@@ -42,7 +45,7 @@ public class UserController {
 // add req handling method (REST API call) to send all users
 	@GetMapping
 	public ResponseEntity<?> listAllusers() {
-		System.out.println("in list emps");
+		System.out.println("in list Users");
 		List<User> list = userService.getAllUserDetails();
 // o.s.ResponseEntity(T body,HttpStatus sts)
 		if (list.isEmpty())
@@ -50,24 +53,31 @@ public class UserController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
-// add req handling method to create new user
+
 	@PostMapping
 	public ResponseEntity<UserDTO> saveUserDetails(@RequestBody @Valid UserDTO user)
-// To inform SC , to un marshall(de-serialization , json/xml --> Java obj) the
-// method arg.
 	{
-		System.out.println("in save emp " + user);// id : null...
-
-		//return  ResponseEntity.ok(userService.saveUserDetails(user))
+		System.out.println("in save User " + user);// id : null...
 		return new ResponseEntity<>(userService.saveUserDetails(user), HttpStatus.CREATED);
 	}
 
+	@PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@RequestBody @Valid User user) 
+    {
+
+            Optional<User> validateuser=userService.signIn(user);
+            if(validateuser.isEmpty())
+            {
+                ErrorResponse resp=new ErrorResponse("Enter Valid Email or Password", LocalDateTime.now());
+                return new ResponseEntity<>(resp, HttpStatus.CONFLICT);
+            }
+            return new ResponseEntity<>(validateuser.get(),HttpStatus.OK);
+    }
 	
-// add req handling method to delete user details
-	@DeleteMapping("/{userId}") // can use ANY name for a path var.
-// @PathVariable => a binding between a path var to method arg.
-	public String deleteEmpDetails(@PathVariable @Range(min = 1, message = "Invalid user id!!!") int userId) {
-		System.out.println("in del emp " + userId);
+
+	@DeleteMapping("/{userId}")
+	public String deleteUserDetails(@PathVariable @Range(min = 1, message = "Invalid user id!!!") int userId) {
+		System.out.println("in del User " + userId);
 		return userService.deleteUserDetails(userId);
 	}
 
@@ -77,7 +87,7 @@ public class UserController {
 	public ResponseEntity<?> getUserDetails(@PathVariable int id) {
 		System.out.println("in get User " + id);
 		User user = userService.getUserDetails(id);
-		System.out.println("emp class " + user.getClass());
+		System.out.println("User class " + user.getClass());
 		return ResponseEntity.ok(user);
 
 	}
@@ -85,7 +95,7 @@ public class UserController {
 // add a method to update existing resource
 	@PutMapping
 	public User updateUserDetails(@RequestBody @Valid User user) {
-		System.out.println("in update emp " + user);// id not null
+		System.out.println("in update User " + user);// id not null
 		return userService.updateUserDetails(user);
 	}
 
